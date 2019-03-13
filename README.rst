@@ -1,7 +1,7 @@
 .. image:: https://img.shields.io/badge/dmtn--111-lsst.io-brightgreen.svg
    :target: https://dmtn-111.lsst.io
-.. image:: https://travis-ci.org/lsst-dm/dmtn-111.svg
-   :target: https://travis-ci.org/lsst-dm/dmtn-111
+.. image:: https://travis-ci.com/lsst-dm/dmtn-111.svg
+   :target: https://travis-ci.com/lsst-dm/dmtn-111
 ..
   Uncomment this section and modify the DOI strings to include a Zenodo DOI badge in the README
   .. image:: https://zenodo.org/badge/doi/10.5281/zenodo.#####.svg
@@ -14,14 +14,14 @@ DM Usage in Observatory Operations
 DMTN-111
 ========
 
-This document describes how DM services and software are used to support Observatory Operations, includingg critical Commandable SAL Components (CSCs) at the Summit and the Commissioning Team at the Summit and Base.
+This document describes how DM services and software are used to support Observatory Operations, including critical Commandable SAL Components (CSCs) at the Summit and the Commissioning Team at the Summit and Base.
 
 **Links:**
 
 - Publication URL: https://dmtn-111.lsst.io
 - Alternative editions: https://dmtn-111.lsst.io/v
 - GitHub repository: https://github.com/lsst-dm/dmtn-111
-- Build system: https://travis-ci.org/lsst-dm/dmtn-111
+- Build system: https://travis-ci.com/lsst-dm/dmtn-111
 
 
 Build this technical note
