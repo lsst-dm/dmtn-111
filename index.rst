@@ -73,8 +73,9 @@ NCSA Systems
 
 NCSA hosts the general-purpose computing facilities for the project.
 In Operations, these are primarily devoted to the Alert Production, Data Release Production, Calibration Products Production, and the US Data Access Center.
-A substantial fraction is available through Commissioning and into Operations for staff use, including development, testing, quality assurance. and other uses.
+A substantial fraction is available through Commissioning and into Operations for staff use, including development, testing, quality assurance, and other uses.
 This includes the staff instance of the LSP.
+
 NCSA has access to all raw data, but the latency until it is available (via the Data Backbone), while typically short, may on occasion be longer due to outages or maintenance; NCSA systems that are not part of Prompt Processing are not required to have observing-level availability.
 
 
