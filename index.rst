@@ -52,7 +52,7 @@ Base Systems
 
 Starting in early 2020, the Commissioning Cluster, a Kubernetes cluster at the Base, will provide an instance of the LSST Science Platform (LSP), including a portal, notebooks, visualization services, and batch computing services.
 It will be able to access data from the AuxTel OODS (at the Summit or Base), the OODS at the Base associated with the ComCam/LSSTCam Archiver, as well as data from the Data Backbone.
-The DBB provides more-reliable but longer-latency ingestion of raw data and EFD LFA files than the OODS, and it keeps historical data as well as master calibration data products prepared by the Calibration Products pipelines.
+The DBB, also available at the Base in early 2020, provides more-reliable but longer-latency ingestion of raw data and EFD LFA files than the OODS, and it keeps historical data as well as master calibration data products prepared by the Calibration Products pipelines.
 The DBB, via the Consolidated Database, contains a transformed version of the EFD as a relational database.
 A short-term, time-series-oriented cache of most EFD contents optimized for analysis will be made available via an InfluxDB instance at the Base; the timing for its deployment is not yet known but is likely to also be early 2020.
 Because raw data and the master calibrations that are needed to reduce it need to be in the same Butler, current master calibration data products will also be pushed to the OODS.
@@ -89,6 +89,7 @@ Satisfying the Use Cases
 CSCs on the Summit that use Science Pipelines code will retrieve pre-built containers from the Summit repository.
 They will access data via the Butler from datastores on local filesystems, with SQLite registries (for Gen2 or Gen3) on the same filesystems.
 Data can be retrieved from the DBB at the Base via a separate Butler (or a DBB-native API, when defined), but that data must be cached to the Summit filesystem for use when the Base is unavailable.
+It is not anticipated that any Summit CSCs will need DBB data prior to the arrival of ComCam, so early 2020 is sufficient for installation of the Base DBB.
 An Oracle database will not be deployed at the Summit.
 In particular, no common central database will be provided for Butler registry or other Consolidated Database purposes; these will only be available at the Base.
 If EFD data or LFA files are required, they should be obtained directly via SAL.
