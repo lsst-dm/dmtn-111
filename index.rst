@@ -96,7 +96,7 @@ If EFD data or LFA files are required, they should be obtained directly via SAL.
 
 LATISS positioning and focus will run on a T&SS (possibly virtual) machine at the Summit using Butler access to a datastore NFS-mounted from the AuxTel Diagnostic Cluster, which will perform the Butler ingest into a local SQLite registry.
 The Butler ingestion capability has not yet been tested in the Tucson lab, but it is required for the Camera's own processing of the images, and the code is similar to that of the OODS (although in Java rather than Python).
-The same Butler-ingested images on the (ComCam and LSSTCam) Camera Diagnostic Cluster will be used for Summit and Base visualization and Camera rapid automated analysis.
+Similarly, Butler-ingested images on the (ComCam and LSSTCam) Camera Diagnostic Cluster will be used for Summit and Base visualization and Camera rapid automated analysis.
 
 Full-frame wavefront processing and other Commissioning and calibration scripts will use the OCS-Controlled Batch service to execute their analyses as part of a Script Queue script.
 Individual images may be quality-controlled by Prompt Processing if necessary.
