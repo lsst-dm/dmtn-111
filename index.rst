@@ -98,9 +98,9 @@ For *ad hoc*, human-driven analysis, there are two time periods of note.
 After early 2020, when the Commissioning Cluster and other Base facilities are available, the OODS at the Base and the Commissioning Cluster are the primary mechanisms, with the staff LSP instance at NCSA and the DACs as alternatives.
 Between mid-2019 and early-2020, the AuxTel Archiver (and OODS) will reside at the Summit.
 There are three alternatives during this period:
-* Run notebooks within containers on the LATISS positioning/focus machine using the NFS mount from the AuxTel Diagnostic Cluster. While feasible, the LSP team prefers not to support notebooks running in this mode (outside the LSP environment).
-* Run notebooks on a single-node LSP instance at the Summit. Such an instance would only be feasible at LATISS (single-CCD) scale. Configuring Kubernetes and the other required LSP services to run on a single machine may take a bit of work, but it can be useful for other reasons (such as enabling LSP testing). The Summit LSP would preferably use the datastore provided by the OODS rather than the AuxTel Diagnostic Cluster, as this will be most similar to Commissioning Cluster use of the Base OODS later on.
-* Run notebooks on the staff LSP instance at NCSA. Latency of access to raw data can perhaps be guaranteed to be faster during this time period. But it remains to be determined whether interactivity will suffer from the long network path.
+  * Run notebooks within containers on the LATISS positioning/focus machine using the NFS mount from the AuxTel Diagnostic Cluster. While feasible, the LSP team prefers not to support notebooks running in this mode (outside the LSP environment).
+  * Run notebooks on a single-node LSP instance at the Summit. Such an instance would only be feasible at LATISS (single-CCD) scale. Configuring Kubernetes and the other required LSP services to run on a single machine may take a bit of work, but it can be useful for other reasons (such as enabling LSP testing). The Summit LSP would preferably use the datastore provided by the OODS rather than the AuxTel Diagnostic Cluster, as this will be most similar to Commissioning Cluster use of the Base OODS later on.
+  * Run notebooks on the staff LSP instance at NCSA. Latency of access to raw data can perhaps be guaranteed to be faster during this time period. But it remains to be determined whether interactivity will suffer from the long network path.
 
 .. .. rubric:: References
 
