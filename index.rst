@@ -38,11 +38,11 @@ It is not designed for *ad hoc*, human-driven analysis.
 A modest-performance, modest-reliability shared filesystem is available on the Summit; its primary use is expected to be user home directories and not direct support of observatory systems.
 A repository for RPM, JAR, and Docker containers will also be available at the Summit.
 
-For the initial part of Commissioning of the Auxiliary Telescope, from mid-2019 to early-2020, the Auxiliary Telescope Archiver will be located at the Summit.
+For the initial part of Commissioning of the Auxiliary Telescope, from mid-2019 to early-2020, the Auxiliary Telescope Archiver, currently in the Tucson lab, will be located at the Summit.
 After that date, it will move to the Base.
-The Archiver provides a service (Forwarder) to push files to the Data Backbone (DBB), initially at NCSA but later at the Base, and can run an instance of the Observatory Operations Data Service (OODS).
+The AT Archiver provides a service (Forwarder) to push files to the Data Backbone (DBB), initially at NCSA but later at the Base, and can run an instance of the Observatory Operations Data Service (OODS).
 The OODS provides low-latency ingestion of raw data into a Butler repository, and it manages that repository as a limited-lifetime cache.
-The Archiver has its own internal filesystem that can be used for the OODS cache and can be mounted by other machines via NFS.
+The AT Archiver has its own internal filesystem that can be used for the OODS cache and can be mounted by other machines via NFS.
 The OODS can also provide Butler ingestion of Engineering and Facility Database (EFD) Large File Annex (LFA) files, once those datasets and their ingestion has been defined.
 
 The Summit systems can access data from the Data Backbone at the Base, but they need to be prepared with fallback options if the network link is down or the DBB is down for maintenance.
