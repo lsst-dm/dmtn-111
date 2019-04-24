@@ -64,7 +64,7 @@ This allows automated analysis of images in the OODS to be performed in conjunct
 Historical data from the DBB is also available, although through a separate Butler instance that is not integrated with the OODS instance.
 Results are returned in the command completion acknowledgement message or as separate telemetry.
 
-The Prompt Processing CSC at the Base obtains crosstalk-corrected images for ComCam and LSSTCam from the Camera (specifically the data acquisition system or DAQ) and transmits them to NCSA distributors for execution of automated processing pipelines.
+The Prompt Processing CSC at the Base obtains crosstalk-corrected images for ComCam and LSSTCam from the Camera (specifically the data acquisition system or DAQ) and transmits them to NCSA distributors which in turn make them available to automated processing pipelines.
 These pipelines include the Alert Production and are expected to include prompt calibration quality control.
 Results from these pipelines are returned to the OCS through the Telemetry Gateway.
 
