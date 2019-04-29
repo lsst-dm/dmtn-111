@@ -116,7 +116,7 @@ There are three alternatives during this period:
   For EFD data, it will be necessary to directly query the Summit EFD, as there is no alternative at the Summit or Base during this period.
 * Run notebooks on the staff LSP instance at NCSA.
   Latency of access to raw data can perhaps be guaranteed to be faster during this time period.
-  But it remains to be determined whether interactivity will suffer from the long network path.
+  A quick test from the Summit showed that, with networking as of 2019-04-25, the demo ``Firefly.ipnb`` notebook could be run successfully including image display without undue interactive lag.
   EFD data can be retrieved from the Consolidated Database at NCSA or, if needed, from an InfluxDB replica.
 
 .. .. rubric:: References
