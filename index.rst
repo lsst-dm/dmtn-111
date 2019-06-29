@@ -31,9 +31,16 @@ A variety of computing environments are available on the Summit.
 
 Each CSC runs on its own (possibly virtual) machine; some have additional resources available to them.
 In particular, the Camera has a Diagnostic Cluster (minimal for LATISS, larger for ComCam and LSSTCam) on a Camera-private network.
-The Camera Diagnostic Cluster is designed to be used for automated rapid quality assessment of images and can be used for image visualization.
+The Camera Diagnostic Cluster is designed to be used for automated rapid quality assessment of images and can be used to run an image visualization service.
 For those uses, it is expected to provide low-latency ingestion of raw data into a Butler repository.
 It is not designed for *ad hoc*, human-driven analysis.
+
+A small system for human-driven analysis is expected to be deployed on the Summit.
+This system may initially be as small as a single node running Kubernetes and JupyterHub, intended to support the commissioning of the Auxiliary Telescope and LATISS.
+Although this has yet to be demonstrated under Kubernetes, it should be possible for notebooks deployed on this system to send and receive SAL messages.
+It will be possible to connect to this system remotely, through appropriate firewalls and/or VPNs.
+Stringent security is required if it is allowed to issue SAL messages.
+Any expansion of this system at the Summit is limited by the power, cooling, and rack space available in the Summit computer room, so we instead plan to expand its capability by adding nodes at the Base in the Commissioning Cluster.
 
 A modest-performance, modest-reliability shared filesystem is available on the Summit; its primary use is expected to be user home directories and not direct support of observatory systems.
 A repository for RPM, JAR, and Docker containers will also be available at the Summit.
@@ -41,23 +48,26 @@ A repository for RPM, JAR, and Docker containers will also be available at the S
 For the initial part of Commissioning of the Auxiliary Telescope, from mid-2019 to early-2020, the Auxiliary Telescope Archiver machine, currently in the Tucson lab, will be located at the Summit.
 After that date, it will move to the Base.
 The AT Archiver machine acquires images from LATISS, and a process on that machine arranges for them to be transferred to the Data Backbone, initially at NCSA but later at the Base.
-The machine could also run an instance of the Observatory Operations Data Service (OODS).
-The OODS provides low-latency ingestion of raw data into a Butler repository, and it manages that repository as a limited-lifetime cache.
+The machine will run an instance of the Observatory Operations Data Service (OODS).
+The OODS provides low-latency (seconds) ingestion of raw data into a Butler repository, and it manages that repository as a limited-lifetime cache.
 The AT Archiver has its own internal filesystem that can be used for the OODS cache and can be mounted by other machines via NFS.
 The OODS can also provide Butler ingestion of Engineering and Facility Database (EFD) Large File Annex (LFA) files, once those datasets and their ingestion has been defined.
+The OODS cache will be the primary source of data for the Summit notebook-based analysis system.
 
 The Summit systems can access data from the Data Backbone at the Base, but they need to be prepared with fallback options if the network link is down or the DBB is down for maintenance.
 
 Base Systems
 ============
 
-Starting in early 2020, the Commissioning Cluster, a Kubernetes cluster at the Base, will provide an instance of the LSST Science Platform (LSP), including a portal, notebooks, visualization services, and batch computing services.
+Starting in early 2020, the Commissioning Cluster, a Kubernetes cluster at the Base, will provide an instance of the LSST Science Platform (LSP), including a portal, notebooks, visualization services, parallel compute (e.g. Dask), and batch computing services.
 It will be able to access data from the AuxTel OODS (at the Summit or Base), the OODS at the Base associated with the ComCam/LSSTCam Archiver, as well as data from the Data Backbone.
 The DBB, also available at the Base in early 2020, provides more-reliable but longer-latency ingestion of raw data and EFD LFA files than the OODS, and it keeps historical data as well as master calibration data products prepared by the Calibration Products pipelines.
 The DBB, via the Consolidated Database, contains a transformed version of the EFD as a relational database.
 A short-term, time-series-oriented cache of most EFD contents optimized for analysis will be made available via an InfluxDB instance at the Base; the timing for its deployment is not yet known but is likely to also be early 2020.
 Because raw data and the master calibrations that are needed to reduce it need to be in the same Butler, current master calibration data products will also be pushed to the OODS.
 The Commissioning Cluster will be equivalent to the current lsst-lsp-stable instance running in the production Kubernetes cluster at NCSA; its LSP code will be updated infrequently under change control, but its Science Pipelines containers can be updated much more frequently as needed.
+It is not expected that the Commissioning Cluster will be able to communicate via SAL; it is solely for analysis and computation.
+The Commissioning Cluster will be accessible remotely with appropriate security.
 
 The OCS-Controlled Batch CSC will provide access to batch analysis services, typically running on the Commissioning Cluster, via SAL commands that can be executed via the Script Queue CSC.
 This allows automated analysis of images in the OODS to be performed in conjunction with other CSC commands.
