@@ -22,7 +22,64 @@ But it is now expected to be present in several other operational systems to per
 * Automatic rapid analysis and visualization of images in the Camera Diagnostic Cluster.
 * Ad hoc and scripted Commissioning-related analyses of images and telemetry.
 
-In addition, the Science Pipelines environment is used as the basis for Telescope and Site Software (T&SS) Commandable SAL Component (CSC) development.
+In addition, the Science Pipelines environment is used as the basis for Telescope and Site Software (TSSW) Commandable SAL Component (CSC) development.
+
+
+Satisfying the Use Cases
+========================
+
+Active Optics
+-------------
+
+For more details, see the `Active Optics Data Flows <https://confluence.lsstcorp.org/x/SQfKBg>` Confluence page.
+
+Wavefront sensor images from LSSTCam for the AOS, during normal science operations, are delivered by a copy of the Camera Control System's (CCS) Data Acquisition (DAQ) Image Driver resident on an AOS machine at the Summit.
+The driver triggers ingestion into a Butler repository local to that machine and also sends an "image available" event via SAL that includes the necessary information to form a Butler DataId.
+The AOS processing code retrieves the image via the Data Butler.
+Any master calibrations needed for image signature removal (ISR) are copied by a separate process from the Data Backbone (DBB) and ingested into the Butler repository.
+
+For full-frame processing with ComCam and LSSTCam, an AOS script is expected to control the entire system.
+It sends "take images" commands via the ScriptQueue CSC to the CCS.
+the science pixels travel via the Archiver CSC to the Observatory Operations Data Service (OODS), both at the Base.
+The Archiver sends an "image available" event via SAL that includes the necessary information to form a Butler DataId; this information is also available from the CCS.
+The AOS then uses the OCS-Controlled Batch service to process the data.
+The batch-executed pipelines use the Data Butler to retrieve images from the OODS.
+Any master calibrations needed are also obtained from the OODS.
+
+Guider Centroiding
+------------------
+
+Guider region-of-interest (ROI) images are obtained via a custom Camera DAQ client.
+The image pixels in memory are converted to an `lsst.afw.Image` or `lsst.afw.Exposure` and passed to centroiding routines in the LSST Science Pipelines Libraries.
+If ISR is required, the master calibrations are pre-loaded from a local Butler repository.
+
+Auxiliary Telescope
+-------------------
+
+Images are captured by the AuxTel CCS and written to the AuxTel Diagnostic Cluster.
+They are ingested into a local Butler repository there, and an "image available" SAL message is sent.
+The AuxTel control machine NFS mounts this repository and retrieves images from it via the Data Butler.
+In addition, the Summit Analysis machine can NFS mount the repository for rapid analysis in a notebook environment.
+Any master calibrations needed for ISR are copied by a separate process from the DBB and ingested into the Butler repository.
+This is similar to how the wavefront sensors are handled, except that the DAQ driver code and Butler repository are resident on Camera machines rather than TSSW machines.
+
+Camera Diagnostic Cluster
+-------------------------
+
+The ComCam/LSSTCam Diagnostic Cluster and the AuxTel Diagnostic Cluster receive their images from their corresponding CCS DAQ drivers.
+These images are ingested into a local Butler repository within the Diagnostic Cluster.
+They can then be processed and visualized by Camera-provided code, which can in turn use the Data Butler and LSST Science Pipelines Libraries.
+Once again, any master calibrations are copied by a separate process from the DBB and ingested into the Butler repository.
+
+Ad Hoc and Scripted Analysis
+----------------------------
+
+For AuxTel and possibly for ComCam, the Summit Analysis machine supports notebooks that can retrieve and process images as well as control Observatory systems via SAL commands.
+For AuxTel, the images are obtained from the NFS mount of the Butler repository on the AuxTel Diagnostic Cluster.
+For ComCam, the images are obtained from the OODS at the Base.
+
+LSSTCam uses the Commissioning Cluster at the Base, which gets its images from the OODS also at the Base.
+
 
 Summit Resources
 ================
@@ -114,7 +171,7 @@ An Oracle database will not be deployed at the Summit due to support and managem
 In particular, no common central database will be provided for Butler registry or other Consolidated Database purposes; these will only be available at the Base.
 If EFD data or LFA files are required, they should be obtained directly via SAL.
 
-LATISS positioning and focus will run on a T&SS (possibly virtual) machine at the Summit using Butler access to a datastore NFS-mounted from the AuxTel Diagnostic Cluster, which will perform the Butler ingest into a local SQLite registry.
+LATISS positioning and focus will run on a TSSW (possibly virtual) machine at the Summit using Butler access to a datastore NFS-mounted from the AuxTel Diagnostic Cluster, which will perform the Butler ingest into a local SQLite registry.
 The Butler ingestion capability has not yet been tested in the Tucson lab, but it is required for the Camera's own processing of the images, and the code is similar to that of the OODS (although in Java rather than Python).
 Similarly, Butler-ingested images on the (ComCam and LSSTCam) Camera Diagnostic Cluster will be used for Summit and Base visualization and Camera rapid automated analysis.
 
@@ -130,43 +187,34 @@ Individual images may be quality-controlled by Prompt Processing if necessary.
     | Instrument | Approx. Dates     | Functionality                                    |
     +============+===================+==================================================+
     | LATISS     |         — 2019-09 | * rsync from Tucson to LDF and Gen2 ingest       |
-    |            |                   | * LSP at LDF                                     |
     |            +-------------------+--------------------------------------------------+
     |            | 2019-09 — 2019-10 | * Tucson OODS and single-host LSP                |
     |            |                   | * rsync from Tucson to LDF and Gen2 ingest       |
-    |            |                   | * LSP at LDF                                     |
     |            +-------------------+--------------------------------------------------+
-    |            | 2019-10 — 2020-12 | * In transit                                     |
+    |            | 2019-10 — 2020-11 | * In transit                                     |
     |            +-------------------+--------------------------------------------------+
-    |            | 2019-12 — 2020-07 | * Summit OODS and single-host LSP                |
+    |            | 2019-11 — 2020-07 | * Summit OODS and single-host LSP                |
     |            |                   | * Minimal DBB from Summit to LDF and Gen3 ingest |
-    |            |                   | * LSP at LDF                                     |
     |            +-------------------+--------------------------------------------------+
     |            | 2020-07 —         | * Base OODS and Commissioning Cluster LSP        |
     |            |                   | * Full DBB from Base to LDF and LDF to Base      |
-    |            |                   | * LSP at LDF                                     |
     +------------+-------------------+--------------------------------------------------+
     | ComCam     | 2019-09 — 2019-11 | * Tucson OODS and single-host LSP                |
     |            |                   | * rsync from Tucson to LDF and Gen2 ingest       |
-    |            |                   | * LSP at LDF                                     |
     |            +-------------------+--------------------------------------------------+
     |            | 2019-11 — 2020-01 | * Tucson OODS and single-host LSP                |
     |            |                   | * Minimal DBB from Tucson to LDF and Gen3 ingest |
-    |            |                   | * LSP at LDF                                     |
     |            +-------------------+--------------------------------------------------+
     |            | 2020-01 — 2020-03 | * In transit                                     |
     |            +-------------------+--------------------------------------------------+
     |            | 2020-03 — 2020-07 | * Base OODS and Commissioning Cluster LSP        |
     |            |                   | * Minimal DBB from Base to LDF and Gen3 ingest   |
-    |            |                   | * LSP at LDF                                     |
     |            +-------------------+--------------------------------------------------+
     |            | 2020-07 —         | * Base OODS and Commissioning Cluster LSP        |
     |            |                   | * Full DBB from Base to LDF and LDF to Base      |
-    |            |                   | * LSP at LDF                                     |
     +------------+-------------------+--------------------------------------------------+
     | LSSTCam    | 2021-03 —         | * Base OODS and Commissioning Cluster LSP        |
     |            |                   | * Full DBB from Base to LDF and LDF to Base      |
-    |            |                   | * LSP at LDF                                     |
     +------------+-------------------+--------------------------------------------------+
 
 For *ad hoc*, human-driven analysis, there are two time periods of note.
