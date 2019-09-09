@@ -190,7 +190,7 @@ The timing of the availability of these services is given in `the following tabl
 Latencies
 =========
 
-The AT Archiver is expected to transmit images to the OODS and the Data Backbone with a 2-second latency in normal operation.
+The ATArchiver is expected to transmit images to the OODS and the Data Backbone with a 2-second latency in normal operation.
 The Data Backbone latency is expected to be low in normal operation, but it does more than the OODS in terms of file tracking, and it may experience outages or delays from time to time as it is dependent on more infrastructure services.
 The OODS, on the other hand, is designed to be simpler and have higher uptime and lower latency, so that is the primary immediate-analysis pathway.
 
@@ -302,7 +302,7 @@ Archivers
 
 For the initial part of Commissioning of the Auxiliary Telescope, from mid-2019 to early-2020, the Auxiliary Telescope Archiver machine, currently in the Tucson lab, will be located at the Summit.
 After that date, it will move to the Base.
-The AT Archiver machine acquires images from LATISS, and a process on that machine arranges for them to be transferred to the Data Backbone, initially at NCSA but later at the Base.
+The ATArchiver machine acquires images from LATISS, and a process on that machine arranges for them to be transferred to the Data Backbone, initially at NCSA but later at the Base.
 
 For ComCam and LSSTCam, the Archiver machines reside at the Base.
 
@@ -324,7 +324,7 @@ Observatory Operations Data Service
 
 The Observatory Operations Data Service (OODS) will typically run on Archiver machines.
 The OODS provides low-latency (seconds) ingestion of raw data into a Butler repository, and it manages that repository as a limited-lifetime cache.
-The AT Archiver has its own internal filesystem that can be used for the OODS cache and can be mounted by other machines via NFS.
+The ATArchiver has its own internal filesystem that can be used for the OODS cache and can be mounted by other machines via NFS.
 The OODS can also provide Butler ingestion of Engineering and Facility Database (EFD) Large File Annex (LFA) files, once those datasets and their ingestion have been defined.
 The OODS cache will be the primary source of data for the Summit notebook-based analysis system.
 
