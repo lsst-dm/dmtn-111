@@ -78,8 +78,10 @@ There are a few alternatives here.
 The baseline is to have images be captured by the CCS.
 It triggers ingestion into a Butler repository local to that machine and also sends an "image available" event via SAL that includes the necessary information to form a Butler DataId.
 The AuxTel control machine NFS mounts this repository and retrieves images from it via the Data Butler.
-In addition, the `Summit Analysis machine <summit-analysis>`_, which provides rapid analysis in a notebook environment, will NFS mount the repository.
+It executes ISR, including any intra-CCD crosstalk correction required, and analyzes the image to enable closed-loop control.
 Any master calibrations needed for ISR are copied by a separate process from the DBB and ingested into the Butler repository.
+
+In addition, the `Summit Analysis machine <summit-analysis>`_, which provides rapid analysis in a notebook environment, will NFS mount the repository.
 
 One alternative would be to have this process be executed by the ATArchiver and an AuxTel OODS instance running on the same machine, both at the Summit.
 The advantage of this would be that the images would get full Header Service headers and would be consistent with the permanent archive.
@@ -135,9 +137,11 @@ LSSTCam is not expected to be able to use this mechanism in typical cases when t
 This is because placing the entire Commissioning Cluster on the SAL-based control network is risky and because providing sufficient compute for rapid full-focal-plane processing at the Summit is difficult due to power, cooling, and rack space limitations.
 A possible alternative would be to support this use case via the Camera Diagnostic Cluster, which is already located at the Summit, but that would likely require substantial coordination with and development by the Camera software team that might pose difficulties.
 
-The third use case is handled by notebooks running on the LSP instance in the Commissioning Cluster.
+The third use case is handled by notebooks running on the LSST Science Platform (LSP) instance in the Commissioning Cluster.
 This instance will have a Portal Aspect to enable simple browsing of the available data from the OODS.
 It will also have a Notebook Aspect to enable both ad hoc analysis and large-scale processing via batch jobs or Dask parallelization.
+
+In all cases, offline transfer of images to the LSST Data Facility (LDF) at NCSA will occur via the DBB, at varying levels of maturity over time.
 
 The timing of the availability of these services is given in `the following table <table-commissioning-timing>`_.
 
@@ -219,7 +223,7 @@ SQLite
 
 SQLite Registries are used at the Summit on the Camera Diagnostic Cluster and potentially the AuxTel OODS if one is provided at the Summit.
 Registry implementations in SQLite are appropriate only when there are a limited number of well-known readers and writers that can be trusted with full database access.
-Because SQLite locking works on the entire database, large-scale queries need to be avoided, meaning that only `butler.get()` calls and PipelineTasks with fully-specified DataIDs should be used.
+Because SQLite locking works on the entire database, large-scale queries need to be avoided, meaning that only `butler.get()` calls and PipelineTasks with fully-specified DataIds should be used.
 
 Oracle
 ------
@@ -280,10 +284,11 @@ Summit Analysis Machine
 
 A small system for human-driven analysis will be deployed on the Summit.
 This system may initially be as small as a single node running Kubernetes and JupyterHub, intended to support the commissioning of the Auxiliary Telescope and LATISS.
+Such a system should be able to support a few simultaneous Commissioning users.
 Although this has yet to be demonstrated under Kubernetes, it should be possible for notebooks deployed on this system to send and receive SAL messages.
 It will be possible to connect to this system remotely, through appropriate firewalls and/or VPNs.
 Stringent security is required if it is allowed to issue SAL messages.
-Any expansion of this system at the Summit is limited by the power, cooling, and rack space available in the Summit computer room, so we instead plan to expand its analysis capability by adding nodes at the Base in the Commissioning Cluster.
+Any expansion of this system at the Summit is limited by the power, cooling, and rack space available in the Summit computer room, so we instead plan to expand analysis capability by adding nodes at the Base in the Commissioning Cluster.
 
 .. _summit-shared-filesystem:
 
@@ -370,10 +375,15 @@ OCS-Controlled Batch
 --------------------
 
 The OCS-Controlled Batch CSC will provide access to batch analysis services, typically running on the Commissioning Cluster, via SAL commands that can be executed via the Script Queue CSC.
+The batch jobs to be executed will consist of PipelineTasks or other processing scripts, parameterized by arguments (such as DataIds) in the SAL command, and generally using the Data Butler to retrieve datasets.
 This allows automated analysis of images in the OODS to be performed in conjunction with other CSC commands.
 Historical data from the DBB is also available, although through a separate Butler instance that is not integrated with the OODS instance.
+This could be used, for example, for comparison purposes.
 Results of the batch job are returned in the command completion acknowledgement message or as separate telemetry (potentially including EFD LFA files).
+
 The OCS-Controlled Batch CSC performs all translations to and from SAL messages; the batch service it uses therefore does not need to be on the SAL control network.
+
+Note that this component does not exist yet; it is anticipated to be ready by July 2020.
 
 .. _prompt-processing:
 
