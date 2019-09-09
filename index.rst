@@ -190,10 +190,18 @@ The timing of the availability of these services is given in `the following tabl
 Latencies
 =========
 
-The ATArchiver is expected to transmit images to the OODS and the Data Backbone with a 2-second latency in normal operation.
+The Archivers are expected to transmit images to the OODS and the Data Backbone with a 2-second latency in normal operation.
 The Data Backbone latency is expected to be low in normal operation, but it does more than the OODS in terms of file tracking, and it may experience outages or delays from time to time as it is dependent on more infrastructure services.
 The OODS, on the other hand, is designed to be simpler and have higher uptime and lower latency, so that is the primary immediate-analysis pathway.
+In particular, the "rsync" and "minimal DBB" mechanisms may take more than 15 minutes to begin the transfer of image data.
+The "full DBB" mechanism will typically begin transfer of image data within seconds, but it is still considered an offline service subject to outages and delays.
 
+The Camera CCS DAQ Image Driver code writes images with very low latency, but it does not include full headers as a result.
+
+Butler ingestion is expected to be complete in a fraction of a second.
+
+In the case of the Archiver interfaces to the OODS and DBB, hard links are expected to allow a single file to be shared between the two, minimizing latency.
+In the event that files need to be written twice or copied, additional latency would be added.
 
 .. _butler-repo:
 
@@ -372,9 +380,10 @@ The OCS-Controlled Batch CSC performs all translations to and from SAL messages;
 Prompt Processing
 -----------------
 
-The Prompt Processing CSC at the Base obtains crosstalk-corrected images for ComCam and LSSTCam from the Camera (specifically the data acquisition system or DAQ) and transmits them to NCSA distributors which in turn make them available to automated processing pipelines.
+The Prompt Processing Ingest CSC at the Base obtains crosstalk-corrected images for ComCam and LSSTCam from the Camera (specifically the data acquisition system or DAQ) and transmits them to NCSA distributors which in turn make them available to automated processing pipelines.
 These pipelines include the Alert Production and are expected to include prompt calibration quality control.
-Results from these pipelines are returned to the OCS through the Telemetry Gateway.
+Results from these pipelines that are useful for Observatory operations are returned to the OCS through the Telemetry Gateway.
+Other data products are transmitted via that Alert Distribution system and/or stored in the Data Backbone and made available through the LSP instances in the Data Access Centers, the Commissioning Cluster, or NCSA (for staff).
 
 .. _chilean-dac:
 
