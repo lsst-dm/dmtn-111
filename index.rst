@@ -28,8 +28,8 @@ But it is now expected to be present in several other operational systems to per
 
 In addition, the Science Pipelines environment is used as the basis for Telescope and Site Software (TSSW) Commandable SAL Component (CSC) development.
 
-The `next section <satisfying-use-cases>` describes how these use cases are handled.
-The Commissioning use case, because of its complexity and significance is described in its `own section <commissioning-analytics>`.
+The `next section <satisfying-use-cases>`_ describes how these use cases are handled.
+The Commissioning use case, because of its complexity and significance is described in its `own section <commissioning-analytics>`_.
 The `following sections <summit-resources>` give more details about the services and resources available to execute the use cases.
 
 
@@ -43,18 +43,18 @@ Satisfying the Use Cases
 Active Optics
 -------------
 
-For more details, see the `Active Optics Data Flows <https://confluence.lsstcorp.org/x/SQfKBg>` Confluence page.
+For more details, see the `Active Optics Data Flows <https://confluence.lsstcorp.org/x/SQfKBg>`_ Confluence page.
 
-Wavefront sensor images from LSSTCam for the AOS, during normal science operations, are delivered by a copy of the `Camera Control System's (CCS) <ccs>` `Data Acquisition (DAQ) Image Driver <ccs-daq-driver>` resident on an `AOS machine <tssw-machines>` at the Summit.
-The driver triggers ingestion into a `Butler repository <butler-repo>` local to that machine and also sends an "image available" event via `SAL <sal>` that includes the necessary information to form a Butler DataId.
+Wavefront sensor images from LSSTCam for the AOS, during normal science operations, are delivered by a copy of the `Camera Control System's (CCS) <ccs>`_ `Data Acquisition (DAQ) Image Driver <ccs-daq-driver>`_ resident on an `AOS machine <tssw-machines>`_ at the Summit.
+The driver triggers ingestion into a `Butler repository <butler-repo>`_ local to that machine and also sends an "image available" event via `SAL <sal>`_ that includes the necessary information to form a Butler DataId.
 The AOS processing code retrieves the image via the Data Butler.
-Any master calibrations needed for image signature removal (ISR) are copied by a separate process from the `Data Backbone (DBB) <dbb>` and ingested into the Butler repository.
+Any master calibrations needed for image signature removal (ISR) are copied by a separate process from the `Data Backbone (DBB) <dbb>`_ and ingested into the Butler repository.
 
 For full-frame processing with ComCam and LSSTCam, an AOS script is expected to control the entire system.
-It sends "take images" commands via the `ScriptQueue CSC <script-queue>` to the CCS.
-the science pixels travel via the `Archiver CSC <archiver>` to the `Observatory Operations Data Service (OODS) <oods>`, both at the Base.
+It sends "take images" commands via the `ScriptQueue CSC <script-queue>`_ to the CCS.
+the science pixels travel via the `Archiver CSC <archiver>`_ to the `Observatory Operations Data Service (OODS) <oods>`_, both at the Base.
 The Archiver sends an "image available" event via SAL that includes the necessary information to form a Butler DataId; this information is also available from the CCS via SAL messages.
-The AOS then uses the `OCS-Controlled Batch <ocs-batch>` service to process the data.
+The AOS then uses the `OCS-Controlled Batch <ocs-batch>`_ service to process the data.
 The batch-executed pipelines use the Data Butler to retrieve images from the OODS.
 Any master calibrations needed are also obtained from the OODS.
 
@@ -78,7 +78,7 @@ There are a few alternatives here.
 The baseline is to have images be captured by the CCS.
 It triggers ingestion into a Butler repository local to that machine and also sends an "image available" event via SAL that includes the necessary information to form a Butler DataId.
 The AuxTel control machine NFS mounts this repository and retrieves images from it via the Data Butler.
-In addition, the `Summit Analysis machine <summit-analysis>`, which provides rapid analysis in a notebook environment, will NFS mount the repository.
+In addition, the `Summit Analysis machine <summit-analysis>`_, which provides rapid analysis in a notebook environment, will NFS mount the repository.
 Any master calibrations needed for ISR are copied by a separate process from the DBB and ingested into the Butler repository.
 
 One alternative would be to have this process be executed by the ATArchiver and an AuxTel OODS instance running on the same machine, both at the Summit.
@@ -89,7 +89,7 @@ There is no reduction in code development, however, because the AOS dataflow sti
 A disadvantage is that a transfer from the ATArchiver or its forwarder to the DBB at the Base must be implemented.
 
 A second alternative would be to have this process be executed by the ATArchiver and an AuxTel OODS at the Base.
-One advantage here is that collocation enables use of the high-performance, high-reliability database instance (`Oracle <oracle>`) at the Base
+One advantage here is that collocation enables use of the high-performance, high-reliability database instance (`Oracle <oracle>`_) at the Base
 This would cease to be an advantage if a high-reliability Oracle instance could be placed at the Summit.
 Another is that it potentially enables a more efficient transfer to the DBB.
 The disadvantage is that the control loop could be interrupted by a network outage; we have typically avoided mounting Base systems at the Summit because of this possibility.
@@ -119,12 +119,12 @@ This leads to three subsidiary use cases:
 * Notebook analysis plus control
 * Analysis only
 
-The first of these is handled in the same way as the `full-frame AOS processing <satisfying-active-optics>`.
+The first of these is handled in the same way as the `full-frame AOS processing <satisfying-active-optics>`_.
 Images are sent via the ATArchiver, the ComCam Archiver, or the LSSTCam Archiver to the OODS.
 Batch jobs triggered by SAL commands from the ScriptQueue are executed by the OCS-Controlled Batch service; these pipelines retrieve the OODS data via the Data Butler.
 Results are returned in the command acknowledgement or published as telemetry.
 If the results are large, they would be stored in the Engineering and Facility Database (EFD) Large File Annex (LFA).
-OCS-Controlled Batch jobs generally run on the `Commissioning Cluster <comm-cluster>`, but for AuxTel they could run on the Summit Analysis machine.
+OCS-Controlled Batch jobs generally run on the `Commissioning Cluster <comm-cluster>`_, but for AuxTel they could run on the Summit Analysis machine.
 
 The second use case is handled by the Summit Analysis machine, which supports execution of notebooks and has access to the SAL-based control network.
 This is expected to be used for AuxTel and ComCam, which produce images small enough to be analyzed on that machine.
@@ -139,7 +139,7 @@ The third use case is handled by notebooks running on the LSP instance in the Co
 This instance will have a Portal Aspect to enable simple browsing of the available data from the OODS.
 It will also have a Notebook Aspect to enable both ad hoc analysis and large-scale processing via batch jobs or Dask parallelization.
 
-The timing of the availability of these services is given in `the following table <table-commissioning-timing>`.
+The timing of the availability of these services is given in `the following table <table-commissioning-timing>`_.
 
 .. _table-commissioning-timing:
 
@@ -345,7 +345,7 @@ Data Backbone
 -------------
 
 The DBB, also available at the Base in early 2020, provides more-reliable but longer-latency ingestion of raw data and EFD LFA files than the OODS, and it keeps historical data as well as master calibration data products prepared by the Calibration Products pipelines.
-The DBB, via the `Consolidated Database <oracle>`, contains a transformed version of the EFD as a relational database.
+The DBB, via the `Consolidated Database <oracle>`_, contains a transformed version of the EFD as a relational database.
 Because raw data and the master calibrations that are needed to reduce it need to be in the same Butler, current master calibration data products will also be pushed to the OODS.
 
 .. _oracle:
