@@ -83,6 +83,10 @@ Any master calibrations needed for ISR are copied by a separate process from the
 
 In addition, the `Summit Analysis machine <summit-analysis>`_, which provides rapid analysis in a notebook environment, will NFS mount the repository.
 
+.. figure:: /_static/AuxTel-Commissioning-Baseline.png
+   :name: fig-auxtel-baseline
+   :alt: Auxiliary Telescope Commissioning Baseline using CCS
+
 One alternative would be to have this process be executed by the ATArchiver and an AuxTel OODS instance running on the same machine, both at the Summit.
 The advantage of this would be that the images would get full Header Service headers and would be consistent with the permanent archive.
 All systems participating in the control loop would remain at the Summit.
@@ -90,11 +94,19 @@ This is a change from the baseline, in which the ATArchiver moves to the Base.
 There is no reduction in code development, however, because the AOS dataflow still requires a CCS DAQ Image Driver-triggered Butler ingest.
 A disadvantage is that a transfer from the ATArchiver or its forwarder to the DBB at the Base must be implemented.
 
+.. figure:: /_static/AuxTel-Commissioning-OODS-Alternative.png
+   :name: fig-auxtel-oods-alternative
+   :alt: Auxiliary Telescope Commissioning Baseline using Summit OODS
+
 A second alternative would be to have this process be executed by the ATArchiver and an AuxTel OODS at the Base.
 One advantage here is that collocation enables use of the high-performance, high-reliability database instance (`Oracle <oracle>`_) at the Base
 This would cease to be an advantage if a high-reliability Oracle instance could be placed at the Summit.
 Another is that it potentially enables a more efficient transfer to the DBB.
 The disadvantage is that the control loop could be interrupted by a network outage; we have typically avoided mounting Base systems at the Summit because of this possibility.
+
+.. figure:: /_static/AuxTel-Commissioning-Base-Alternative.png
+   :name: fig-auxtel-base-alternative
+   :alt: Auxiliary Telescope Commissioning Baseline using Base OODS
 
 .. _satisfying-camera-diagnostic-cluster:
 
