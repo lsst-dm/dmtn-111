@@ -169,7 +169,7 @@ The timing of the availability of these services is given in :ref:`the following
     |            | 2019-09 — 2019-10 | * Single-host LSP with manual Butler ingest      |
     |            |                   | * rsync from Tucson to LDF and Gen2 ingest       |
     |            +-------------------+--------------------------------------------------+
-    |            | 2019-10 — 2020-11 | * In transit                                     |
+    |            | 2019-11 — 2019-11 | * In transit                                     |
     |            +-------------------+--------------------------------------------------+
     |            | 2019-11 — 2020-07 | * AuxTel Diagnostic Cluster and Summit Analysis  |
     |            |                   | * Minimal DBB from Summit to LDF and Gen3 ingest |
