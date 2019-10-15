@@ -373,6 +373,11 @@ The DBB, also available at the Base in early 2020, provides more-reliable but lo
 The DBB, via the :ref:`Consolidated Database <oracle>`_, contains a transformed version of the EFD as a relational database.
 Because raw data and the master calibrations that are needed to reduce it need to be in the same Butler, current master calibration data products will also be pushed to the OODS.
 
+The DBB is rolling out in two phases.
+Initially, files, which are already being ingested into a Gen2 Butler, will have their metadata ingested into Rucio for permanent tracking.
+This is referred to as the "minimal DBB".
+The "full DBB" will integrate Rucio's metadata with the Gen3 Butler.
+
 .. _oracle:
 
 Consolidated Database
